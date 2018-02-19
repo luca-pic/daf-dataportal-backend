@@ -1,4 +1,3 @@
-import CommonBuild._
 import com.typesafe.sbt.packager.docker.{Cmd, ExecCmd}
 import de.heikoseeberger.sbtheader.license.Apache2_0
 import de.zalando.play.generator.sbt.ApiFirstPlayScalaCodeGenerator.autoImport.playScalaAutogenerateTests
@@ -9,8 +8,6 @@ import sbt.Keys.resolvers
 organization in ThisBuild := "it.gov.daf"
 
 name := "daf-datipubblici"
-
-//version in ThisBuild := "1.0.1-SNAPSHOT"
 
 //version in ThisBuild := "1.0-alpha.1"
 

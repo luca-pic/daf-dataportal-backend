@@ -1230,15 +1230,10 @@ definitions:
         format: int32
       subtitle:
         type: string
-      graph1:
-        $ref: '#/definitions/Graph'
-      text:
+      layout:
         type: string
-      graph2:
-        $ref: '#/definitions/Graph'
-      footer:
-        type:
-          string
+      widgets:
+        type: string
       timestamp:
         type: string
         format: date-time
@@ -1254,13 +1249,13 @@ definitions:
         type: string
       caption:
         type: string
-  Graph:
-    type: object
-    properties:
-      props:
-        $ref: '#/definitions/Props'
-      title:
-        type: string
+#  Graph:
+#    type: object
+#    properties:
+#      props:
+#        $ref: '#/definitions/Props'
+#      title:
+#        type: string
   Props:
     type: object
     properties:
