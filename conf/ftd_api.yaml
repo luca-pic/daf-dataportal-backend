@@ -1775,10 +1775,73 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  "/widget/save":
+  "/widgets":
     post:
       tags:
       - Widgets
+      summary: get all internal widgets
+      operationId: widgetsGetAll
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: filters
+        in: body
+        description: filters to search widgets
+        required: true
+        schema:
+          $ref: '#/definitions/WidgetsFilters'
+      responses:
+        200:
+          description: Success Message
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Widget'
+        404:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  "/widget/{id}":
+    get:
+      tags:
+      - Widgets
+      summary: get a widget by id
+      operationId: widgetGetById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        descriptin: the id of the widget
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success Message
+          schema:
+            $ref: '#/definitions/Widget'
+        401:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  "/widget/save":
+    post:
+      tags:
+        - Widgets
       summary: save widget
       operationId: widgetSave
       consumes:
@@ -1795,6 +1858,37 @@ paths:
           description: successful operation
           schema:
             "$ref": "#/definitions/Success"
+        500:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  "/widget/delete/{id}":
+    delete:
+      tags:
+        - Widgets
+      summary: delete a widget
+      operationId: widgetDelete
+      consumes:
+        - application/json
+      parameters:
+      - name: id
+        in: path
+        description: the widget id to delete
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/Success"
+        401:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
         500:
           description: Unexpected error
           schema:
@@ -2221,22 +2315,49 @@ definitions:
   ChartOpts:
     type: object
     properties:
-
+      dataVisual:
+        type: array
+        items:
+          $ref: '#/definitions/DataVisual'
+      zAxys:
+        type: string
+      xAxys:
+        type: string
+      chartType:
+        type: string
+  DataVisual:
+    type: object
+    properties:
+      dataKey:
+        type: string
+      color:
+        type: string
   Widget:
     type: object
+    required:
+      - query
+      - name
+      - queryBuilderState
+      - chartOpts
     properties:
       id:
         type: string
       query:
         type: string
+      queryBuilderState:
+        type: string
       name:
         type: string
       shared:
-        type: bool
+        type: boolean
+      dateCreation:
+        type: string
       acl:
         type: array
         items:
           $ref: '#/definitions/Acl'
+      datasetFrom:
+        type: string
       sources:
         type: array
         items:
@@ -2244,5 +2365,16 @@ definitions:
       author:
         type: string
       chartOpts:
-
+        type: object
+        $ref: '#/definitions/ChartOpts'
+  WidgetsFilters:
+    type: object
+    properties:
+      text:
+        type: string
+      owner:
+        type: boolean
+      limit:
+        type: integer
+        format: int32
 

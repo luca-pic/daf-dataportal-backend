@@ -51,6 +51,8 @@ import it.gov.daf.common.sso.common.CredentialManager
 import it.gov.daf.common.utils.RequestContext
 import java.net.URLEncoder
 import play.api.mvc.Headers
+import repositories.widget.WidgetRepository
+import services.widget.WidgetRegistry
 
 /**
  * This controller is re-generated after each change in the specification.
@@ -59,7 +61,7 @@ import play.api.mvc.Headers
 
 package ftd_api.yaml {
     // ----- Start of unmanaged code area for package Ftd_apiYaml
-                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                
     // ----- End of unmanaged code area for package Ftd_apiYaml
     class Ftd_apiYaml @Inject() (
         // ----- Start of unmanaged code area for injections Ftd_apiYaml
@@ -267,6 +269,21 @@ package ftd_api.yaml {
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.searchFullText
         }
+        val widgetDelete = widgetDeleteAction { (id: String) =>  
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.widgetDelete
+            RequestContext.execInContext[Future[WidgetDeleteType[T] forSome { type T }]]("widgetDelete") { () =>
+            val credentials = CredentialManager.readCredentialFromRequest(currentRequest)
+            val response = WidgetRegistry.widgetService.widgetDelete(credentials.username, id)
+            response flatMap {
+              case Right(w) => WidgetDelete200(w)
+              case Left(e)  => e.code match {
+                case Some(401) => WidgetDelete401(e)
+                case Some(500) => WidgetDelete500(e)
+              }
+            }
+          }
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.widgetDelete
+        }
         val stories = storiesAction { input: (ErrorCode, ErrorCode, PublicDashboardsGetLimit) =>
             val (status, page, limit) = input
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.stories
@@ -348,6 +365,21 @@ package ftd_api.yaml {
             CatalogDistrubutionFormat200(distributions)
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.catalogDistrubutionFormat
+        }
+        val widgetGetById = widgetGetByIdAction { (id: String) =>  
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.widgetGetById
+            RequestContext.execInContext[Future[WidgetGetByIdType[T] forSome { type T }]]("widgetGetById") { () =>
+            val credentials = CredentialManager.readCredentialFromRequest(currentRequest)
+            val response = WidgetRegistry.widgetService.widgetById(credentials.username, credentials.groups.toList, id)
+            response flatMap {
+              case Right(w) => WidgetGetById200(w)
+              case Left(e)  => e.code match {
+                case Some(401) => WidgetGetById401(e)
+                case Some(404) => WidgetGetById404(e)
+              }
+            }
+          }
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.widgetGetById
         }
         val getAllNotifications = getAllNotificationsAction { input: (String, PublicDashboardsGetLimit) =>
             val (user, limit) = input
@@ -514,6 +546,18 @@ package ftd_api.yaml {
             result flatMap (Dashboards200(_))
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.dashboards
+        }
+        val widgetsGetAll = widgetsGetAllAction { (filters: WidgetsFilters) =>  
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.widgetsGetAll
+            RequestContext.execInContext[Future[WidgetsGetAllType[T] forSome { type T }]]("widgetsGetAll") { () =>
+            val credentials = CredentialManager.readCredentialFromRequest(currentRequest)
+            val response = WidgetRegistry.widgetService.widgetsGetAll(credentials.username, credentials.groups.toList, filters)
+            response flatMap {
+              case Right(w) => WidgetsGetAll200(w)
+              case Left(e)  => WidgetsGetAll404(e)
+            }
+          }
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.widgetsGetAll
         }
         val searchLast = searchLastAction {  _ =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.searchLast
@@ -710,6 +754,18 @@ package ftd_api.yaml {
             AllDistributionFormats200(distributions)
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.allDistributionFormats
+        }
+        val widgetSave = widgetSaveAction { (widget: Widget) =>  
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.widgetSave
+            RequestContext.execInContext[Future[WidgetSaveType[T] forSome { type T }]]("widgetSave") { () =>
+            val credentials = CredentialManager.readCredentialFromRequest(currentRequest)
+            val response = WidgetRegistry.widgetService.widgetSave(credentials.username, widget)
+            response flatMap {
+              case Right(w) => WidgetSave200(w)
+              case Left(e)  => WidgetSave500(e)
+            }
+          }
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.widgetSave
         }
         val dashboardIframesbyorg = dashboardIframesbyorgAction { (orgName: String) =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.dashboardIframesbyorg
@@ -1076,6 +1132,34 @@ package ftd_api.yaml {
    // ----- Start of unmanaged code area for action  Ftd_apiYaml.getsport
    NotImplementedYet
    // ----- End of unmanaged code area for action  Ftd_apiYaml.getsport
+     */
+
+    
+     // Dead code for absent methodFtd_apiYaml.widgetGetAll
+     /*
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.widgetGetAll
+            NotImplementedYet
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.widgetGetAll
+     */
+
+    
+     // Dead code for absent methodFtd_apiYaml.widgetsGetById
+     /*
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.widgetsGetById
+          RequestContext.execInContext[Future[WidgetsGetByIdType[T] forSome { type T }]]("widgetsGetById") { () =>
+            val credentials = CredentialManager.readCredentialFromRequest(currentRequest)
+            val response = WidgetRegistry.widgetService.widgetById(credentials.username, credentials.groups.toList, id)
+//            response flatMap {
+//              case Right(w) => WidgetsGetById200(w)
+//              case Left(e)  => e.code.get match {
+//                case 401 => WidgetsGet
+//              }
+//            }
+            ???
+          }
+
+            NotImplementedYet
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.widgetsGetById
      */
 
     

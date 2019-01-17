@@ -7,8 +7,8 @@ import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.query.Imports.DBObject
 import ftd_api.yaml.{Error, LastOffset, Notification, Subscription, Success}
 import play.api.Logger
-import utils.ConfigReader
 import play.api.libs.json._
+import utils._
 
 import scala.concurrent.Future
 

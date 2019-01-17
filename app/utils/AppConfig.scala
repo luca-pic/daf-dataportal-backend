@@ -33,6 +33,8 @@ class AppConfig @Inject()(playConfig: Configuration) {
   val password :Option[String] = playConfig.getString("mongo.password")
   val database :Option[String] = playConfig.getString("mongo.database")
 
+  val collNameWidgets = playConfig.getString("mongo.coll.widgets")
+
   val securityManHost :Option[String] = playConfig.getString("security.manager.host")
 
   val cookieExpiration :Option[Long] = playConfig.getLong("cookie.expiration")
@@ -47,6 +49,9 @@ class AppConfig @Inject()(playConfig: Configuration) {
 
   val elasticsearchUrl = playConfig.getString("elasticsearch.url")
   val elasticsearchPort = playConfig.getInt("elasticsearch.port")
+  val elasticsearchIndex = playConfig.getString("elasticsearch.index")
+
+  val elasticsearchTypeWidgetsName = playConfig.getString("elasticsearch.type.widgets")
 
   val kafkaProxy: Option[String] = playConfig.getString("kafka-proxy.url")
 
@@ -62,6 +67,9 @@ object ConfigReader {
   private val config = new AppConfig(Configuration.load(Environment.simple()))
 
   require(config.elasticsearchUrl.nonEmpty, "A elasticsearch url must be specified")
+  require(config.elasticsearchIndex.nonEmpty, "A elasticsearch index must be specified")
+  require(config.collNameWidgets.nonEmpty, "Name of widgets collection must be specified")
+  require(config.elasticsearchTypeWidgetsName.nonEmpty, "Name of widgets type in elasticsearch must be specified")
 
   def getDbHost: String = config.dbHost.getOrElse("localhost")
   def getDbPort: Int = config.dbPort.getOrElse(27017)
@@ -87,6 +95,9 @@ object ConfigReader {
   def database :String = config.database.getOrElse("monitor_mdb")
   def password :String = config.password.getOrElse("")
   def userName :String = config.userName.getOrElse("")
+
+  def getCollWidgetsName = config.collNameWidgets.get
+
   def securityManHost :String = config.securityManHost.getOrElse("xxx")
 
   def cookieExpiration:Long = config.cookieExpiration.getOrElse(30L)// 30 min by default
@@ -101,6 +112,9 @@ object ConfigReader {
 
   def getElasticsearchUrl = config.elasticsearchUrl.get
   def getElasticsearchPort = config.elasticsearchPort.getOrElse(9200)
+  def getElasticsearchIndex = config.elasticsearchIndex.get
+
+  def getElasticsearchTypeWidgetsName = config.elasticsearchTypeWidgetsName.get
 
   def getKafkaProxy = config.kafkaProxy.getOrElse("localhost:8085")
 
