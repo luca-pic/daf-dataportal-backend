@@ -57,7 +57,7 @@ import play.api.mvc.Headers
 
 package ftd_api.yaml {
     // ----- Start of unmanaged code area for package Ftd_apiYaml
-            
+                
     // ----- End of unmanaged code area for package Ftd_apiYaml
     class Ftd_apiYaml @Inject() (
         // ----- Start of unmanaged code area for injections Ftd_apiYaml
@@ -374,11 +374,11 @@ package ftd_api.yaml {
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.allDistributionGroups
         }
-        val deleteTtl = deleteTtlAction { (ttlKey: KeysIntValue) =>  
+        val deleteTtl = deleteTtlAction { (deleteTTLNotificationsInfo: DeleteTTLNotificationInfo) =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.deleteTtl
             RequestContext.execInContext[Future[DeleteTtlType[T] forSome { type T }]]("deleteTtl") { () =>
             if(CredentialManager.isDafSysAdmin(currentRequest)){
-              PushNotificationRegistry.pushNotificationService.deleteTtl(ttlKey) flatMap {
+              PushNotificationRegistry.pushNotificationService.deleteTtl(deleteTTLNotificationsInfo) flatMap {
                 case Right(success) => DeleteTtl200(success)
                 case Left(error)    => DeleteTtl500(error)
               }
@@ -873,16 +873,10 @@ package ftd_api.yaml {
         val getAllSystemNotifications = getAllSystemNotificationsAction {  _ =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllSystemNotifications
             RequestContext.execInContext[Future[GetAllSystemNotificationsType[T] forSome { type T }]]("getAllSystemNotifications") { () =>
-            def parseError(error: Error) = {
-              error.code match {
-                case Some(404) => GetAllSystemNotifications404(error)
-                case _         => GetAllSystemNotifications500(error)
-              }
-            }
             if(CredentialManager.isDafSysAdmin(currentRequest)){
               PushNotificationRegistry.pushNotificationService.getAllSystemNotification flatMap {
                 case Right(success) => GetAllSystemNotifications200(success)
-                case Left(error)    => parseError(error)
+                case Left(error)    => GetAllSystemNotifications500(error)
               }
             } else {
               logger.debug("Only SysAdmin can get sys notifications")
@@ -1066,10 +1060,16 @@ package ftd_api.yaml {
         val getTtl = getTtlAction {  _ =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.getTtl
             RequestContext.execInContext[Future[GetTtlType[T] forSome { type T }]]("getTtl") { () =>
+              def parseResponse(error: Error) = {
+                error.code.getOrElse(0) match {
+                  case 404  => GetTtl404(error)
+                  case _    => GetTtl500(error)
+                }
+              }
               if(CredentialManager.isDafSysAdmin(currentRequest)) {
                 PushNotificationRegistry.pushNotificationService.getTtl.flatMap{
                   case Right(r) => GetTtl200(r)
-                  case Left(l)  => GetTtl500(l)
+                  case Left(l)  => parseResponse(l)
                 }
               } else {
                 GetTtl401(Error(Some(401), Some("Only SysAdmin can get ttl"), None))
@@ -1170,6 +1170,11 @@ package ftd_api.yaml {
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.monitorcatalogs
             NotImplementedYet
             // ----- End of unmanaged code area for action  Ftd_apiYaml.monitorcatalogs
+        }
+        val getAllPublicSystemNotifications = getAllPublicSystemNotificationsAction {  _ =>  
+            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllPublicSystemNotifications
+            NotImplementedYet
+            // ----- End of unmanaged code area for action  Ftd_apiYaml.getAllPublicSystemNotifications
         }
         val saveSettings = saveSettingsAction { input: (String, Settings) =>
             val (domain, settings) = input

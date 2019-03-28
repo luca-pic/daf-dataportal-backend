@@ -30,8 +30,11 @@ class AppConfig @Inject()(playConfig: Configuration) {
   val tdMetabaseURL: Option[String] = playConfig.getString("tdmetabase.url")
 
   val userName :Option[String] = playConfig.getString("mongo.username")
+  val userRoot: Option[String] = playConfig.getString("mongo.usernameAdmin")
   val password :Option[String] = playConfig.getString("mongo.password")
+  val rootPassword :Option[String] = playConfig.getString("mongo.rootPassword")
   val database :Option[String] = playConfig.getString("mongo.database")
+  val databaseRoot: Option[String] = playConfig.getString("mongo.databaseAdmin")
   val collNotificationName: Option[String] = playConfig.getString("mongo.collNotificationName")
   val collSubscriptionName: Option[String] = playConfig.getString("mongo.collSubscriptionName")
 
@@ -40,9 +43,10 @@ class AppConfig @Inject()(playConfig: Configuration) {
   val catalogManagerHost: Option[String] = playConfig.getString("catalog-manager.host")
   val catalogManagerNotificationPath: Option[String] = playConfig.getString("catalog-manager.notificationPath")
 
-  val sysAdminName: Option[String] = playConfig.getString("sysAdmin")
+  val sysAdminName: Option[String] = playConfig.getString("sys-admin")
 
   val openDataGroup: Option[String] = playConfig.getString("openDataGroup")
+  val openDataUser: Option[String] = playConfig.getString("openDataUser")
 
   val cookieExpiration :Option[Long] = playConfig.getLong("cookie.expiration")
 
@@ -64,6 +68,9 @@ class AppConfig @Inject()(playConfig: Configuration) {
   val datasetUserOpendataEmail: Option[String] = playConfig.getString("dataset-manager.email")
   val datasetUserOpendataPwd: Option[String] = playConfig.getString("dataset-manager.pwd")
 
+  val notificationInfo = playConfig.getConfigSeq("notificationType")
+
+  val sysNotificationTypeName = playConfig.getString("systemNotificationTypeName")
 
 
 }
@@ -79,8 +86,14 @@ object ConfigReader {
   require(config.collNotificationName.nonEmpty, "The name of the collectio notification must be specified")
   require(config.collSubscriptionName.nonEmpty, "The name of the collectio subscription must be specified")
   require(config.sysAdminName.nonEmpty, "The name of sys admin must be specified")
+  require(config.userRoot.nonEmpty, "The mongo user root must be specified")
+  require(config.databaseRoot.nonEmpty, "The mongo database root must be specified")
+  require(config.notificationInfo.nonEmpty, "NotificationInfo must be specified")
+  require(config.openDataUser.nonEmpty, "Open data user must be specified")
+
 
   def getOpenDataGroup = config.openDataGroup.get
+  def getOpenDataUser = config.openDataUser.get
 
   def getDbHost: String = config.dbHost.getOrElse("localhost")
   def getDbPort: Int = config.dbPort.getOrElse(27017)
@@ -104,8 +117,11 @@ object ConfigReader {
   def getTdMetabaseURL = config.tdMetabaseURL.getOrElse("https://dashboard.teamdigitale.governo.it")
 
   def database :String = config.database.getOrElse("monitor_mdb")
+  def databaseRoot: String = config.databaseRoot.get
   def password :String = config.password.getOrElse("")
+  def getRootPasswprd: String = config.rootPassword.getOrElse("")
   def userName :String = config.userName.getOrElse("")
+  def userRoot: String = config.userRoot.get
   def getCollNotificationName: String = config.collNotificationName.get
   def getCollSubscriptionName: String = config.collSubscriptionName.get
 
@@ -135,4 +151,7 @@ object ConfigReader {
   def getDatasetUserOpendataEmail = config.datasetUserOpendataEmail.getOrElse("XXXXX")
   def getDatasetUserOpendataPwd = config.datasetUserOpendataPwd.getOrElse("XXXXXXX")
 
+  def getNotificationInfo = config.notificationInfo.get.map{x => x.getString("name").get -> x.getInt("value").get}.toMap
+
+  def getSysNotificationTypeName = config.sysNotificationTypeName.get
 }
