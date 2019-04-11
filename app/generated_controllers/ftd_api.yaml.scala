@@ -258,7 +258,7 @@ package ftd_api.yaml {
 
             val result = for {
               orgsWorks <- getUserOrgsWorkgroups(credentials.username)
-              out <- DashboardRegistry.dashboardService.searchText(filters, credentials.username, orgsWorks.toList, limit)
+              out <- ElasticsearchRegistry.elasticsearchService.searchText(filters, credentials.username, orgsWorks.toList, limit)
             } yield out
             result flatMap (SearchFullText200(_))
           }
@@ -325,7 +325,7 @@ package ftd_api.yaml {
         val searchLastPublic = searchLastPublicAction { (org: DistributionLabel) =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.searchLastPublic
             RequestContext.execInContext[Future[SearchLastPublicType[T] forSome { type T }]]("searchLastPublic") { () =>
-            SearchLastPublic200(DashboardRegistry.dashboardService.searchLastPublic(org))
+            SearchLastPublic200(ElasticsearchRegistry.elasticsearchService.searchLastPublic(org))
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.searchLastPublic
         }
@@ -539,7 +539,7 @@ package ftd_api.yaml {
             val (filters, limit) = input
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.searchFullTextPublic
             RequestContext.execInContext[Future[SearchFullTextPublicType[T] forSome { type T }]]("searchFullTextPublic") { () =>
-            SearchFullTextPublic200(DashboardRegistry.dashboardService.searchTextPublic(filters, limit))
+            SearchFullTextPublic200(ElasticsearchRegistry.elasticsearchService.searchTextPublic(filters, limit))
           }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.searchFullTextPublic
         }
@@ -604,7 +604,7 @@ package ftd_api.yaml {
             val result = for {
               orgsWorks <- getUserOrgsWorkgroups(credentials.username)
               out <- Future.successful {
-                DashboardRegistry.dashboardService.searchLast(credentials.username, orgsWorks.toList)
+                ElasticsearchRegistry.elasticsearchService.searchLast(credentials.username, orgsWorks.toList)
               }
             } yield out
             result flatMap (SearchLast200(_))
@@ -1173,7 +1173,12 @@ package ftd_api.yaml {
         }
         val getAllPublicSystemNotifications = getAllPublicSystemNotificationsAction {  _ =>  
             // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllPublicSystemNotifications
-            NotImplementedYet
+            RequestContext.execInContext[Future[GetAllPublicSystemNotificationsType[T] forSome { type T }]]("getAllPublicSystemNotifications") { () =>
+            PushNotificationRegistry.pushNotificationService.getAllPublicSystemNotifications flatMap{
+              case Right(success) => GetAllPublicSystemNotifications200(success)
+              case Left(error)    => GetAllPublicSystemNotifications500(error)
+            }
+          }
             // ----- End of unmanaged code area for action  Ftd_apiYaml.getAllPublicSystemNotifications
         }
         val saveSettings = saveSettingsAction { input: (String, Settings) =>
@@ -1251,39 +1256,7 @@ package ftd_api.yaml {
   // ----- End of unmanaged code area for action  Ftd_apiYaml.kyloInferschema
      */
 
-    
-     // Dead code for absent methodFtd_apiYaml.saveDatastory
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.saveDatastory
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.saveDatastory
-     */
 
-    
-     // Dead code for absent methodFtd_apiYaml.getDatastoryById
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getDatastoryById
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.getDatastoryById
-     */
-
-    
-     // Dead code for absent methodFtd_apiYaml.getAllDatastory
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllDatastory
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.getAllDatastory
-     */
-
-    
-     // Dead code for absent methodFtd_apiYaml.getAllWidgets
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllWidgets
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.getAllWidgets
-     */
-
-    
      // Dead code for absent methodFtd_apiYaml.getsport
      /*
    // ----- Start of unmanaged code area for action  Ftd_apiYaml.getsport
@@ -1291,39 +1264,7 @@ package ftd_api.yaml {
    // ----- End of unmanaged code area for action  Ftd_apiYaml.getsport
      */
 
-    
-     // Dead code for absent methodFtd_apiYaml.getPublicDatastoryById
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getPublicDatastoryById
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.getPublicDatastoryById
-     */
 
-    
-     // Dead code for absent methodFtd_apiYaml.getAllSystemNotification
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllSystemNotification
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.getAllSystemNotification
-     */
-
-    
-     // Dead code for absent methodFtd_apiYaml.getAllPublicDatastory
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.getAllPublicDatastory
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.getAllPublicDatastory
-     */
-
-    
-     // Dead code for absent methodFtd_apiYaml.deleteDatastory
-     /*
-            // ----- Start of unmanaged code area for action  Ftd_apiYaml.deleteDatastory
-            NotImplementedYet
-            // ----- End of unmanaged code area for action  Ftd_apiYaml.deleteDatastory
-     */
-
-    
      // Dead code for absent methodFtd_apiYaml.sport
      /*
    // ----- Start of unmanaged code area for action  Ftd_apiYaml.sport

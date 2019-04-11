@@ -1948,6 +1948,10 @@ paths:
           description: unauthorized
           schema:
             $ref: '#/definitions/Error'
+        403:
+          description: invalid notification object
+          schema:
+            $ref: '#/definitions/Error'
         500:
           description: error in insert into kafka
           schema:
@@ -2555,7 +2559,7 @@ definitions:
   SysNotificationInfo:
     type: object
     required:
-      - descritpion
+      - description
       - title
       - endDate
     properties:
