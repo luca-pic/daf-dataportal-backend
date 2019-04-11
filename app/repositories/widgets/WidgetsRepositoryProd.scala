@@ -121,9 +121,9 @@ class WidgetsRepositoryProd extends WidgetsRepository {
       }
     }
     val response = widgetsSeq.filter {
-        case Right(_) => true
-        case _  => false
-    }.map{ case Right(b) => b }
+      case Right(_) => true
+      case _  => false
+    }.collect{ case Right(b) => b }
     response
   }
 

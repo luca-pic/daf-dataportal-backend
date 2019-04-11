@@ -400,6 +400,7 @@ package ftd_api.yaml {
               def parseError(error: Error) = {
                 error.code match {
                   case Some(401) => SaveDatastory401(error)
+                  case Some(403) => SaveDatastory403(error)
                   case _         => SaveDatastory500(error)
                 }
               }

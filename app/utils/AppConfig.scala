@@ -10,24 +10,24 @@ import play.api.{Configuration, Environment}
 class AppConfig @Inject()(playConfig: Configuration) {
   val dbHost: Option[String] = playConfig.getString("mongo.host")
   val dbPort: Option[Int] = playConfig.getInt("mongo.port")
-  val ckanHost  = playConfig.getString("app.ckan.url")
-  val ckanApiKey =  playConfig.getString("app.ckan.auth.token")
-  val localUrl = playConfig.getString("app.local.url")
+  val ckanHost: Option[String]  = playConfig.getString("app.ckan.url")
+  val ckanApiKey: Option[String] =  playConfig.getString("app.ckan.auth.token")
+  val localUrl: Option[String] = playConfig.getString("app.local.url")
 
-  val metabaseURL= playConfig.getString("metabase.url")
-  val metauser = playConfig.getString("metabase.user")
-  val metapass = playConfig.getString("metabase.pass")
+  val metabaseURL: Option[String]= playConfig.getString("metabase.url")
+  val metauser: Option[String] = playConfig.getString("metabase.user")
+  val metapass: Option[String] = playConfig.getString("metabase.pass")
 
-  val supersetURL= playConfig.getString("superset.url")
-  val supersetOpenDataUrl = playConfig.getString("superset.openDataUrl")
-  val supersetUser = playConfig.getString("superset.user")
-  val supersetPass = playConfig.getString("superset.pass")
-  val supersetOpenDataUser = playConfig.getString("superset.openDataUser")
-  val supersetOpenDataPwd = playConfig.getString("superset.openDataPwd")
+  val supersetURL: Option[String]= playConfig.getString("superset.url")
+  val supersetOpenDataUrl: Option[String] = playConfig.getString("superset.openDataUrl")
+  val supersetUser: Option[String] = playConfig.getString("superset.user")
+  val supersetPass: Option[String] = playConfig.getString("superset.pass")
+  val supersetOpenDataUser: Option[String] = playConfig.getString("superset.openDataUser")
+  val supersetOpenDataPwd: Option[String] = playConfig.getString("superset.openDataPwd")
 
-  val grafanaURL= playConfig.getString("grafana.url")
+  val grafanaURL: Option[String] = playConfig.getString("grafana.url")
 
-  val tdMetabaseURL = playConfig.getString("tdmetabase.url")
+  val tdMetabaseURL: Option[String] = playConfig.getString("tdmetabase.url")
 
   val userName :Option[String] = playConfig.getString("mongo.username")
   val password :Option[String] = playConfig.getString("mongo.password")
@@ -45,9 +45,9 @@ class AppConfig @Inject()(playConfig: Configuration) {
   val kyloCsvSerde : Option[String] = playConfig.getString("kylo.csvSerde")
   val kyloJsonSerde : Option[String] = playConfig.getString("kylo.jsonSerde")
 
-  val elasticsearchUrl = playConfig.getString("elasticsearch.url")
-  val elasticsearchPort = playConfig.getInt("elasticsearch.port")
-  val elastisearchMaxResult = playConfig.getInt("elasticsearch.max_result_window")
+  val elasticsearchUrl: Option[String] = playConfig.getString("elasticsearch.url")
+  val elasticsearchPort: Option[Int] = playConfig.getInt("elasticsearch.port")
+  val elastisearchMaxResult: Option[Int] = playConfig.getInt("elasticsearch.max_result_window")
 
   val kafkaProxy: Option[String] = playConfig.getString("kafka-proxy.url")
 
